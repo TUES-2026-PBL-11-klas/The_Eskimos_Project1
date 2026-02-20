@@ -57,7 +57,7 @@ Backend: Node.js
 Много подходящ за REST API
 Лесна интеграция с външни API
 
-База данни:  PostgreSQL
+База данни:  PostgreSQL + ORM
 Защо:
 Релационна структура
 Подходяща за user → favorites → movies връзки
