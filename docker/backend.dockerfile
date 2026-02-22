@@ -1,4 +1,5 @@
 # Stage 1: Dependencies 
+
 FROM node:20-alpine AS deps
 
 RUN apk add --no-cache openssl

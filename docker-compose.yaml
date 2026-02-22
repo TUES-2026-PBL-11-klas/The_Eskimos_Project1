@@ -1,5 +1,6 @@
 services:
   # PostgreSQL primary 
+  
   db:
     image: postgres:16-alpine
     restart: unless-stopped
@@ -11,6 +12,7 @@ services:
       - db_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-eskimos} -d ${POSTGRES_DB:-movieexplorer}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-eskimos}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -18,6 +20,7 @@ services:
       - app_network
 
   # Node.js backend 
+
   backend:
     build:
       context: .
@@ -39,9 +42,14 @@ services:
     networks:
       - app_network
 
+    # depends_on: db disabled for API-only testing
+    networks:
+      - app_network
+
 volumes:
   db_data:
 
 networks:
   app_network:
+    driver: bridge
     driver: bridge
