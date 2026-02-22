@@ -1,5 +1,6 @@
 services:
-  # ── PostgreSQL primary ────────────────────────────────────────────────────
+  # PostgreSQL primary 
+  
   db:
     image: postgres:16-alpine
     restart: unless-stopped
@@ -10,6 +11,7 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-eskimos} -d ${POSTGRES_DB:-movieexplorer}"]
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-eskimos}"]
       interval: 10s
       timeout: 5s
@@ -17,7 +19,8 @@ services:
     networks:
       - app_network
 
-  # ── Node.js backend ───────────────────────────────────────────────────────
+  # Node.js backend 
+
   backend:
     build:
       context: .
@@ -33,19 +36,20 @@ services:
       PORT: 3001
     ports:
       - "3001:3001"
-    # depends_on: db disabled for API-only testing
+    depends_on:
+      db:
+        condition: service_healthy
     networks:
       - app_network
 
-  # ── Next.js frontend (placeholder — fill in when ready) ───────────────────
-  # frontend: disabled until frontend is implemented
-
-  # ── Nginx reverse proxy (disabled until frontend is ready) ────────────────
-  # nginx: disabled until frontend is implemented
+    # depends_on: db disabled for API-only testing
+    networks:
+      - app_network
 
 volumes:
   db_data:
 
 networks:
   app_network:
+    driver: bridge
     driver: bridge

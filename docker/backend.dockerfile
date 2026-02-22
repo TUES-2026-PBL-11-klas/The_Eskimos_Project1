@@ -1,4 +1,5 @@
-# ── Stage 1: Dependencies ─────────────────────────────────────────────────────
+# Stage 1: Dependencies 
+
 FROM node:20-alpine AS deps
 
 RUN apk add --no-cache openssl
@@ -15,7 +16,7 @@ RUN npm install
 COPY backend/prisma ./prisma
 RUN npx prisma generate
 
-# ── Stage 2: Production image ─────────────────────────────────────────────────
+# Stage 2: Production image 
 FROM node:20-alpine AS production
 
 RUN apk add --no-cache openssl
@@ -35,5 +36,5 @@ ENV PORT=3001
 
 EXPOSE 3001
 
-# Start the server (skip migrations for now — no DB)
-CMD ["node", "src/index.js"]
+# Run migrations then start the server
+CMD ["sh", "-c", "npx prisma migrate deploy && node src/index.js"]
