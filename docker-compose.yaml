@@ -1,0 +1,51 @@
+services:
+  # ── PostgreSQL primary ────────────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-eskimos}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-eskimos_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-movieexplorer}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-eskimos}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app_network
+
+  # ── Node.js backend ───────────────────────────────────────────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend.dockerfile
+      target: production
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-eskimos}:${POSTGRES_PASSWORD:-eskimos_secret}@db:5432/${POSTGRES_DB:-movieexplorer}
+      TMDB_API_KEY: ${TMDB_API_KEY}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
+      PORT: 3001
+    ports:
+      - "3001:3001"
+    # depends_on: db disabled for API-only testing
+    networks:
+      - app_network
+
+  # ── Next.js frontend (placeholder — fill in when ready) ───────────────────
+  # frontend: disabled until frontend is implemented
+
+  # ── Nginx reverse proxy (disabled until frontend is ready) ────────────────
+  # nginx: disabled until frontend is implemented
+
+volumes:
+  db_data:
+
+networks:
+  app_network:
+    driver: bridge
