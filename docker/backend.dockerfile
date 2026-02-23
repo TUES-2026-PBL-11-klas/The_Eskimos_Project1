@@ -2,6 +2,7 @@
 
 FROM node:20-alpine AS deps
 
+RUN npm install -g npm@11.10.1
 RUN apk add --no-cache openssl
 
 WORKDIR /app
@@ -10,7 +11,8 @@ WORKDIR /app
 COPY backend/package*.json ./
 
 # Install all deps (including devDependencies for Prisma CLI)
-RUN npm install
+RUN --mount=type=cache,id=npm-backend,target=/root/.npm \
+    npm install
 
 # Generate Prisma client inside the container
 COPY backend/prisma ./prisma
