@@ -17,7 +17,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   favorites Favorite[]
-  watched   WatchedMovie[]
+  watched   Watched[]
 }
 
 model Favorite {
@@ -31,7 +31,7 @@ model Favorite {
   @@unique([userId, tmdbMovieId])
 }
 
-model WatchedMovie {
+model Watched {
   id          Int      @id @default(autoincrement())
   userId      Int
   tmdbMovieId Int

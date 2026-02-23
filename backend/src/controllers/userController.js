@@ -71,7 +71,7 @@ async function removeFavorite(req, res, next) {
 
 async function getWatched(req, res, next) {
   try {
-    const watched = await prisma.watchedMovie.findMany({
+    const watched = await prisma.watched.findMany({
       where: { userId: req.user.userId },
       orderBy: { addedAt: "desc" },
     });
@@ -90,7 +90,7 @@ async function setWatched(req, res, next) {
 
     const watched = req.body.watched !== false; // default true
 
-    const record = await prisma.watchedMovie.upsert({
+    const record = await prisma.watched.upsert({
       where: {
         userId_tmdbMovieId: { userId: req.user.userId, tmdbMovieId },
       },
@@ -111,7 +111,7 @@ async function removeWatched(req, res, next) {
       return res.status(400).json({ error: "Invalid movie ID" });
     }
 
-    await prisma.watchedMovie.deleteMany({
+    await prisma.watched.deleteMany({
       where: { userId: req.user.userId, tmdbMovieId },
     });
 

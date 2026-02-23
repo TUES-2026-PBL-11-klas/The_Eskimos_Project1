@@ -26,6 +26,9 @@ app.use(
 // Body parsing
 app.use(express.json());
 
+// Trust the nginx reverse proxy (needed for express-rate-limit to read real IPs)
+app.set('trust proxy', 1);
+
 // Global rate limiter (100 requests per 15 minutes per IP)
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,

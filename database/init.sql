@@ -26,17 +26,17 @@ CREATE TABLE IF NOT EXISTS "Favorite" (
 CREATE UNIQUE INDEX IF NOT EXISTS "Favorite_userId_tmdbMovieId_key"
     ON "Favorite"("userId", "tmdbMovieId");
 
-CREATE TABLE IF NOT EXISTS "WatchedMovie" (
+CREATE TABLE IF NOT EXISTS "Watched" (
     "id"          SERIAL       NOT NULL,
     "userId"      INTEGER      NOT NULL,
     "tmdbMovieId" INTEGER      NOT NULL,
     "watched"     BOOLEAN      NOT NULL DEFAULT true,
     "addedAt"     TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "WatchedMovie_pkey"        PRIMARY KEY ("id"),
-    CONSTRAINT "WatchedMovie_userId_fkey" FOREIGN KEY ("userId")
+    CONSTRAINT "Watched_pkey"        PRIMARY KEY ("id"),
+    CONSTRAINT "Watched_userId_fkey" FOREIGN KEY ("userId")
         REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS "WatchedMovie_userId_tmdbMovieId_key"
-    ON "WatchedMovie"("userId", "tmdbMovieId");
+CREATE UNIQUE INDEX IF NOT EXISTS "Watched_userId_tmdbMovieId_key"
+    ON "Watched"("userId", "tmdbMovieId");

@@ -42,14 +42,14 @@ async function main() {
   // Watched movies 
   const aliceWatched = [550, 278];
   for (const tmdbId of aliceWatched) {
-    await prisma.watchedMovie.upsert({
+    await prisma.watched.upsert({
       where: { userId_tmdbMovieId: { userId: alice.id, tmdbMovieId: tmdbId } },
       update: {},
       create: { userId: alice.id, tmdbMovieId: tmdbId, watched: true },
     });
   }
 
-  await prisma.watchedMovie.upsert({
+  await prisma.watched.upsert({
     where: { userId_tmdbMovieId: { userId: bob.id, tmdbMovieId: 238 } },
     update: {},
     create: { userId: bob.id, tmdbMovieId: 238, watched: true },
