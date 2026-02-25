@@ -1,0 +1,7 @@
+services:
+  backend:
+    image: ${DOCKERHUB_USERNAME}/movieexplorer-backend:latest
+
+  frontend:
+    image: ${DOCKERHUB_USERNAME}/movieexplorer-frontend:latest
+    build: !reset null
