@@ -1,0 +1,69 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  favorites     FavoriteMovie[]
+  watched       WatchedMovie[]
+  showFavorites FavoriteShow[]
+  showWatched   WatchedShow[]
+}
+
+model FavoriteMovie {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  tmdbMovieId Int
+  addedAt     DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, tmdbMovieId])
+}
+
+model WatchedMovie {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  tmdbMovieId Int
+  watched     Boolean  @default(true)
+  addedAt     DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, tmdbMovieId])
+}
+
+model FavoriteShow {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  tmdbShowId Int
+  addedAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, tmdbShowId])
+}
+
+model WatchedShow {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  tmdbShowId Int
+  watched    Boolean  @default(true)
+  addedAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, tmdbShowId])
+}

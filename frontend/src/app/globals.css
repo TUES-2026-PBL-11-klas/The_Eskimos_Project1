@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --tmdb-dark:   #032541;
+  --tmdb-darker: #0d253f;
+  --tmdb-accent: #01b4e4;
+  --tmdb-green:  #90cea1;
+}
+
+body {
+  background-color: #1a1a2e;
+  color: #fff;
+}
+
+/* Horizontal scroll strip */
+.scroll-strip {
+  @apply flex gap-4 overflow-x-auto pb-4;
+  scrollbar-width: thin;
+  scrollbar-color: #01b4e4 transparent;
+}
+.scroll-strip::-webkit-scrollbar        { height: 4px; }
+.scroll-strip::-webkit-scrollbar-track  { background: transparent; }
+.scroll-strip::-webkit-scrollbar-thumb  { background: #01b4e4; border-radius: 2px; }
+
+/* Rating circle */
+.rating-ring {
+  @apply relative inline-flex items-center justify-center rounded-full bg-tmdb-darker;
+  width: 2.75rem;
+  height: 2.75rem;
+}
