@@ -32,7 +32,7 @@ async function main() {
   // 550 = Fight Club, 278 = The Shawshank Redemption, 238 = The Godfather
   const aliceFavorites = [550, 278, 238];
   for (const tmdbId of aliceFavorites) {
-    await prisma.favorite.upsert({
+    await prisma.favoriteMovie.upsert({
       where: { userId_tmdbMovieId: { userId: alice.id, tmdbMovieId: tmdbId } },
       update: {},
       create: { userId: alice.id, tmdbMovieId: tmdbId },
@@ -42,14 +42,14 @@ async function main() {
   // Watched movies 
   const aliceWatched = [550, 278];
   for (const tmdbId of aliceWatched) {
-    await prisma.watched.upsert({
+    await prisma.watchedMovie.upsert({
       where: { userId_tmdbMovieId: { userId: alice.id, tmdbMovieId: tmdbId } },
       update: {},
       create: { userId: alice.id, tmdbMovieId: tmdbId, watched: true },
     });
   }
 
-  await prisma.watched.upsert({
+  await prisma.watchedMovie.upsert({
     where: { userId_tmdbMovieId: { userId: bob.id, tmdbMovieId: 238 } },
     update: {},
     create: { userId: bob.id, tmdbMovieId: 238, watched: true },

@@ -31,6 +31,15 @@ export const discoverMovies     = (genre, page = 1)       => request(`/movies/di
 export const getMovieDetails    = (id)                    => request(`/movies/${id}`);
 export const getRecommendations = (id)                    => request(`/movies/${id}/recommendations`);
 
+// Shows
+export const getPopularShows        = (page = 1)        => request(`/shows/popular?page=${page}`);
+export const getTrendingShows       = (window = 'week') => request(`/shows/trending?time_window=${window}`);
+export const searchShows            = (q, page = 1)     => request(`/shows/search?q=${encodeURIComponent(q)}&page=${page}`);
+export const getShowGenres          = ()                => request('/shows/genres');
+export const discoverShows          = (genre, page = 1) => request(`/shows/discover?genre=${genre}&page=${page}`);
+export const getShowDetails         = (id)              => request(`/shows/${id}`);
+export const getShowRecommendations = (id)              => request(`/shows/${id}/recommendations`);
+
 // Auth
 export const register = (data) => request('/auth/register', { method: 'POST', body: JSON.stringify(data) });
 export const login    = (data) => request('/auth/login',    { method: 'POST', body: JSON.stringify(data) });
@@ -42,7 +51,15 @@ export const addFavorite     = (id)              => request(`/users/favorites/${
 export const removeFavorite  = (id)              => request(`/users/favorites/${id}`,  { method: 'DELETE' });
 export const getWatched      = ()                => request('/users/watched');
 export const setWatched      = (id, watched)     => request(`/users/watched/${id}`,    { method: 'PUT', body: JSON.stringify({ watched }) });
-export const removeWatched   = (id)              => request(`/users/watched/${id}`,    { method: 'DELETE' });
+export const removeWatched      = (id)              => request(`/users/watched/${id}`,         { method: 'DELETE' });
+
+// User — shows
+export const getShowFavorites    = ()              => request('/users/show-favorites');
+export const addShowFavorite     = (id)            => request(`/users/show-favorites/${id}`,  { method: 'POST' });
+export const removeShowFavorite  = (id)            => request(`/users/show-favorites/${id}`,  { method: 'DELETE' });
+export const getShowWatched      = ()              => request('/users/show-watched');
+export const setShowWatched      = (id, watched)   => request(`/users/show-watched/${id}`,    { method: 'PUT', body: JSON.stringify({ watched }) });
+export const removeShowWatched   = (id)            => request(`/users/show-watched/${id}`,    { method: 'DELETE' });
 
 // TMDB image helpers 
 export const posterUrl   = (path, size = 'w342')  => path ? `https://image.tmdb.org/t/p/${size}${path}` : null;

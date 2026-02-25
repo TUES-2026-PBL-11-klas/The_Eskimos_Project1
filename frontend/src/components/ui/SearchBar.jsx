@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 
-export default function SearchBar({ onSearch, placeholder = 'Search for a movie…' }) {
+export default function SearchBar({ onSearch, placeholder = 'Search for movies and TV shows…' }) {
   const [query, setQuery] = useState('');
 
   function handleSubmit(e) {
@@ -10,20 +10,14 @@ export default function SearchBar({ onSearch, placeholder = 'Search for a movie�
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex w-full">
+    <form onSubmit={handleSubmit} className="w-full">
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder={placeholder}
-        className="flex-1 bg-white/10 text-white placeholder-white/40 rounded-l px-4 py-2 text-sm outline-none focus:bg-white/20 transition-colors"
+        className="w-full bg-white text-gray-900 placeholder-gray-400 rounded-none px-4 py-2.5 text-sm outline-none focus:ring-0 border-b-2 border-transparent focus:border-tmdb-accent transition-colors"
       />
-      <button
-        type="submit"
-        className="bg-tmdb-accent hover:bg-tmdb-accent/80 text-white px-4 py-2 rounded-r text-sm font-medium transition-colors"
-      >
-        Search
-      </button>
     </form>
   );
 }

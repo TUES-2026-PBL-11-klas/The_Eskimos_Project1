@@ -1,16 +1,9 @@
 'use client';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import SearchBar from '@/components/ui/SearchBar';
 
 export default function Navbar() {
   const { user } = useAuth();
-  const router = useRouter();
-
-  function handleSearch(q) {
-    router.push(`/search?q=${encodeURIComponent(q)}`);
-  }
 
   return (
     <nav className="bg-tmdb-dark sticky top-0 z-50 shadow-lg">
@@ -20,10 +13,18 @@ export default function Navbar() {
           🎬 MovieExplorer
         </Link>
 
-        {/* Search */}
-        <div className="flex-1">
-          <SearchBar onSearch={handleSearch} />
+        {/* Nav links */}
+        <div className="hidden sm:flex items-center gap-5 shrink-0">
+          <Link href="/" className="text-white/70 hover:text-white text-sm transition-colors">
+            Movies
+          </Link>
+          <Link href="/shows" className="text-white/70 hover:text-white text-sm transition-colors">
+            TV Shows
+          </Link>
         </div>
+
+        {/* Spacer */}
+        <div className="flex-1" />
 
         {/* Auth */}
         <div className="flex items-center gap-3 shrink-0">

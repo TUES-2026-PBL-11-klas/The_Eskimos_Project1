@@ -19,7 +19,7 @@ async function getMe(req, res, next) {
 
 async function getFavorites(req, res, next) {
   try {
-    const favorites = await prisma.favorite.findMany({
+    const favorites = await prisma.favoriteMovie.findMany({
       where: { userId: req.user.userId },
       orderBy: { addedAt: "desc" },
     });
@@ -36,7 +36,7 @@ async function addFavorite(req, res, next) {
       return res.status(400).json({ error: "Invalid movie ID" });
     }
 
-    const favorite = await prisma.favorite.upsert({
+    const favorite = await prisma.favoriteMovie.upsert({
       where: {
         userId_tmdbMovieId: { userId: req.user.userId, tmdbMovieId },
       },
@@ -57,7 +57,7 @@ async function removeFavorite(req, res, next) {
       return res.status(400).json({ error: "Invalid movie ID" });
     }
 
-    await prisma.favorite.deleteMany({
+    await prisma.favoriteMovie.deleteMany({
       where: { userId: req.user.userId, tmdbMovieId },
     });
 
@@ -71,7 +71,7 @@ async function removeFavorite(req, res, next) {
 
 async function getWatched(req, res, next) {
   try {
-    const watched = await prisma.watched.findMany({
+    const watched = await prisma.watchedMovie.findMany({
       where: { userId: req.user.userId },
       orderBy: { addedAt: "desc" },
     });
@@ -90,7 +90,7 @@ async function setWatched(req, res, next) {
 
     const watched = req.body.watched !== false; // default true
 
-    const record = await prisma.watched.upsert({
+    const record = await prisma.watchedMovie.upsert({
       where: {
         userId_tmdbMovieId: { userId: req.user.userId, tmdbMovieId },
       },
@@ -111,8 +111,110 @@ async function removeWatched(req, res, next) {
       return res.status(400).json({ error: "Invalid movie ID" });
     }
 
-    await prisma.watched.deleteMany({
+    await prisma.watchedMovie.deleteMany({
       where: { userId: req.user.userId, tmdbMovieId },
+    });
+
+    res.status(204).send();
+  } catch (err) {
+    next(err);
+  }
+}
+
+// Show Favorites
+
+async function getShowFavorites(req, res, next) {
+  try {
+    const favorites = await prisma.favoriteShow.findMany({
+      where: { userId: req.user.userId },
+      orderBy: { addedAt: 'desc' },
+    });
+    res.json(favorites);
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function addShowFavorite(req, res, next) {
+  try {
+    const tmdbShowId = parseInt(req.params.showId);
+    if (isNaN(tmdbShowId)) {
+      return res.status(400).json({ error: 'Invalid show ID' });
+    }
+
+    const favorite = await prisma.favoriteShow.upsert({
+      where: { userId_tmdbShowId: { userId: req.user.userId, tmdbShowId } },
+      create: { userId: req.user.userId, tmdbShowId },
+      update: {},
+    });
+
+    res.status(201).json(favorite);
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function removeShowFavorite(req, res, next) {
+  try {
+    const tmdbShowId = parseInt(req.params.showId);
+    if (isNaN(tmdbShowId)) {
+      return res.status(400).json({ error: 'Invalid show ID' });
+    }
+
+    await prisma.favoriteShow.deleteMany({
+      where: { userId: req.user.userId, tmdbShowId },
+    });
+
+    res.status(204).send();
+  } catch (err) {
+    next(err);
+  }
+}
+
+// Show Watched
+
+async function getShowWatched(req, res, next) {
+  try {
+    const watched = await prisma.watchedShow.findMany({
+      where: { userId: req.user.userId },
+      orderBy: { addedAt: 'desc' },
+    });
+    res.json(watched);
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function setShowWatched(req, res, next) {
+  try {
+    const tmdbShowId = parseInt(req.params.showId);
+    if (isNaN(tmdbShowId)) {
+      return res.status(400).json({ error: 'Invalid show ID' });
+    }
+
+    const watched = req.body.watched !== false;
+
+    const record = await prisma.watchedShow.upsert({
+      where: { userId_tmdbShowId: { userId: req.user.userId, tmdbShowId } },
+      create: { userId: req.user.userId, tmdbShowId, watched },
+      update: { watched },
+    });
+
+    res.json(record);
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function removeShowWatched(req, res, next) {
+  try {
+    const tmdbShowId = parseInt(req.params.showId);
+    if (isNaN(tmdbShowId)) {
+      return res.status(400).json({ error: 'Invalid show ID' });
+    }
+
+    await prisma.watchedShow.deleteMany({
+      where: { userId: req.user.userId, tmdbShowId },
     });
 
     res.status(204).send();
@@ -129,4 +231,10 @@ module.exports = {
   getWatched,
   setWatched,
   removeWatched,
+  getShowFavorites,
+  addShowFavorite,
+  removeShowFavorite,
+  getShowWatched,
+  setShowWatched,
+  removeShowWatched,
 };
