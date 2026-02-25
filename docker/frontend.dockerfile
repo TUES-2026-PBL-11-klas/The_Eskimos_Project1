@@ -1,12 +1,11 @@
 # Stage 1: Install dependencies
 FROM node:20-alpine AS deps
-RUN npm install 
 WORKDIR /app
 COPY frontend/package*.json ./
 RUN --mount=type=cache,id=npm-frontend,target=/root/.npm \
     npm install
 
-# Stage 2: Build 
+# Stage 2: Build
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
@@ -16,7 +15,7 @@ ARG API_URL=http://backend:3001
 ENV API_URL=$API_URL
 RUN npm run build
 
-# Stage 3: Production 
+# Stage 3: Production
 FROM node:20-alpine AS production
 WORKDIR /app
 ENV NODE_ENV=production
