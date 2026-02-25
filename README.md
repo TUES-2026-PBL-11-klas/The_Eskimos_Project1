@@ -50,14 +50,14 @@ Frontend: Next + Tailwind CSS
 Бърз development
 Подходящ за SPA приложения
 
-Backend: Node.js
+Backend: Node.js + Express
 Защо:
 Лек и бърз за разработка
 Същият език като frontend (JavaScript)
 Много подходящ за REST API
 Лесна интеграция с външни API
 
-База данни:  PostgreSQL + ORM
+База данни:  PostgreSQL + Prisma ORM
 Защо:
 Релационна структура
 Подходяща за user → favorites → movies връзки
