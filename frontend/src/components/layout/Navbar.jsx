@@ -15,7 +15,7 @@ export default function Navbar() {
 
         {/* Nav links */}
         <div className="hidden sm:flex items-center gap-5 shrink-0">
-          <Link href="/" className="text-white/70 hover:text-white text-sm transition-colors">
+          <Link href="/movies" className="text-white/70 hover:text-white text-sm transition-colors">
             Movies
           </Link>
           <Link href="/shows" className="text-white/70 hover:text-white text-sm transition-colors">
