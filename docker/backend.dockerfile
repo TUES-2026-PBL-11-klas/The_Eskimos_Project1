@@ -1,4 +1,4 @@
-# Stage 1: Dependencies 
+# Stage 1: Dependencies
 
 FROM node:20-alpine AS deps
 
@@ -17,7 +17,8 @@ RUN --mount=type=cache,id=npm-backend,target=/root/.npm \
 COPY backend/prisma ./prisma
 RUN npx prisma generate
 
-# Stage 2: Production image 
+# Stage 2: Production image
+
 FROM node:20-alpine AS production
 
 RUN apk add --no-cache openssl
