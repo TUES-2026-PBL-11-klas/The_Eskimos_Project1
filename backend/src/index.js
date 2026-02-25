@@ -6,6 +6,7 @@ const rateLimit = require('express-rate-limit');
 
 const authRoutes = require('./routes/auth');
 const movieRoutes = require('./routes/movies');
+const showRoutes = require('./routes/shows');
 const userRoutes = require('./routes/users');
 const errorHandler = require('./middleware/errorHandler');
 
@@ -41,6 +42,7 @@ app.use('/api', limiter);
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/movies', movieRoutes);
+app.use('/api/shows', showRoutes);
 app.use('/api/users', userRoutes);
 
 // Health check

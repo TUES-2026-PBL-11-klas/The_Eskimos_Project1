@@ -16,11 +16,13 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  favorites Favorite[]
-  watched   Watched[]
+  favorites     FavoriteMovie[]
+  watched       WatchedMovie[]
+  showFavorites FavoriteShow[]
+  showWatched   WatchedShow[]
 }
 
-model Favorite {
+model FavoriteMovie {
   id          Int      @id @default(autoincrement())
   userId      Int
   tmdbMovieId Int
@@ -31,7 +33,7 @@ model Favorite {
   @@unique([userId, tmdbMovieId])
 }
 
-model Watched {
+model WatchedMovie {
   id          Int      @id @default(autoincrement())
   userId      Int
   tmdbMovieId Int
@@ -41,4 +43,27 @@ model Watched {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, tmdbMovieId])
+}
+
+model FavoriteShow {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  tmdbShowId Int
+  addedAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, tmdbShowId])
+}
+
+model WatchedShow {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  tmdbShowId Int
+  watched    Boolean  @default(true)
+  addedAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, tmdbShowId])
 }

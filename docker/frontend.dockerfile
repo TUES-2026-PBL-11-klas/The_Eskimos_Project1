@@ -1,6 +1,5 @@
 # Stage 1: Install dependencies
 FROM node:20-alpine AS deps
-RUN npm install -g npm@11.10.1
 WORKDIR /app
 COPY frontend/package*.json ./
 RUN --mount=type=cache,id=npm-frontend,target=/root/.npm \

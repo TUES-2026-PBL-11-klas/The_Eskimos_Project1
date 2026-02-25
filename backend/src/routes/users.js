@@ -8,6 +8,12 @@ const {
   getWatched,
   setWatched,
   removeWatched,
+  getShowFavorites,
+  addShowFavorite,
+  removeShowFavorite,
+  getShowWatched,
+  setShowWatched,
+  removeShowWatched,
 } = require('../controllers/userController');
 
 const router = Router();
@@ -31,5 +37,19 @@ router.delete('/favorites/:movieId', removeFavorite);
 router.get('/watched', getWatched);
 router.put('/watched/:movieId', setWatched);
 router.delete('/watched/:movieId', removeWatched);
+
+// GET    /api/users/show-favorites
+// POST   /api/users/show-favorites/:showId
+// DELETE /api/users/show-favorites/:showId
+router.get('/show-favorites', getShowFavorites);
+router.post('/show-favorites/:showId', addShowFavorite);
+router.delete('/show-favorites/:showId', removeShowFavorite);
+
+// GET    /api/users/show-watched
+// PUT    /api/users/show-watched/:showId   body: { watched: true|false }
+// DELETE /api/users/show-watched/:showId
+router.get('/show-watched', getShowWatched);
+router.put('/show-watched/:showId', setShowWatched);
+router.delete('/show-watched/:showId', removeShowWatched);
 
 module.exports = router;

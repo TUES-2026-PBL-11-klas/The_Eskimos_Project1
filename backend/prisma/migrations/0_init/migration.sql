@@ -10,35 +10,35 @@ CREATE TABLE "User" (
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "Favorite" (
+CREATE TABLE "FavoriteMovie" (
     "id"          SERIAL       NOT NULL,
     "userId"      INTEGER      NOT NULL,
     "tmdbMovieId" INTEGER      NOT NULL,
     "addedAt"     TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "Favorite_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "FavoriteMovie_pkey" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "Watched" (
+CREATE TABLE "WatchedMovie" (
     "id"          SERIAL       NOT NULL,
     "userId"      INTEGER      NOT NULL,
     "tmdbMovieId" INTEGER      NOT NULL,
     "watched"     BOOLEAN      NOT NULL DEFAULT true,
     "addedAt"     TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "Watched_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "WatchedMovie_pkey" PRIMARY KEY ("id")
 );
 
 -- create indexes
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
-CREATE UNIQUE INDEX "Favorite_userId_tmdbMovieId_key" ON "Favorite"("userId", "tmdbMovieId");
+CREATE UNIQUE INDEX "FavoriteMovie_userId_tmdbMovieId_key" ON "FavoriteMovie"("userId", "tmdbMovieId");
 
-CREATE UNIQUE INDEX "Watched_userId_tmdbMovieId_key" ON "Watched"("userId", "tmdbMovieId");
+CREATE UNIQUE INDEX "WatchedMovie_userId_tmdbMovieId_key" ON "WatchedMovie"("userId", "tmdbMovieId");
 
 -- AddForeignKey
-ALTER TABLE "Favorite" ADD CONSTRAINT "Favorite_userId_fkey"
+ALTER TABLE "FavoriteMovie" ADD CONSTRAINT "FavoriteMovie_userId_fkey"
     FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE "Watched" ADD CONSTRAINT "Watched_userId_fkey"
+ALTER TABLE "WatchedMovie" ADD CONSTRAINT "WatchedMovie_userId_fkey"
     FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
