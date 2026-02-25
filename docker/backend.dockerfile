@@ -2,7 +2,7 @@
 
 FROM node:20-alpine AS deps
 
-RUN npm install -g npm@11.10.1
+RUN npm install 
 RUN apk add --no-cache openssl
 
 WORKDIR /app
